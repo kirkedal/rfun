@@ -18,6 +18,7 @@
 --
 -- * I know that there are an obvious reader monad below.
 -----------------------------------------------------------------------------
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Interp where
 
@@ -39,7 +40,7 @@ type EvalTrace = [String]
 type ErrorRFun = String
 
 newtype Eval a = E { runE :: WriterT EvalTrace (Either ErrorRFun) a }
-    deriving (Applicative, Functor, Monad, MonadWriter EvalTrace, MonadError ErrorRFun)
+    deriving (Functor, Monad, MonadWriter EvalTrace, MonadError ErrorRFun)
 
 runEval :: Eval a ->  Either ErrorRFun (a, EvalTrace)
 runEval eval = runWriterT (runE eval)
